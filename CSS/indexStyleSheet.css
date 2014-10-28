@@ -1,0 +1,102 @@
+﻿.table-bordered {
+    margin: auto;
+    border: none;
+    width: 50%!important;
+}
+
+td, th {
+    position: relative;
+    min-width: 145px;
+    text-align: center;
+}
+
+.withoutborder {
+    border: none !important;
+}
+
+.actions {
+    position: relative;
+}
+
+    .actions button {
+        padding: 0;
+        margin: 0;
+    }
+
+.btn-sort {
+    padding: 0;
+    float: right;
+    margin-right: 3px;
+}
+
+.btn-edit, .btn-ok, .btn-addok {
+    position: absolute;
+    top: 9px;
+    left: 8px;
+}
+
+.btn-trash, .btn-cansel, .btn-addcansel {
+    position: absolute;
+    top: 9px;
+    right: 8px;
+}
+
+.btn-ok, .btn-cansel, .btn-hidden, .btn-addok, .btn-addcansel {
+    display: none;
+}
+
+.btn-visible {
+    display: block;
+}
+
+.total, .summa {
+    visibility: hidden;
+}
+
+.btn-group-xs {
+    width: 20px;
+    height: 20px;
+}
+
+.glyphicon {
+    top: 0;
+}
+
+#total {
+    margin-left: 49.5em;
+    font-weight: 700;
+}
+
+#summa {
+    margin-left: 33em;
+    font-weight: 700;
+}
+
+.invalid {
+    background-color: #faa;
+}
+
+.tooltipVisible {
+    display: block !important;
+    background-color: #faa;
+    position: absolute;
+    width: 300px;
+    padding: 5px;
+    text-align: center;
+    font-size: 90%;
+    border-radius: 5px;
+}
+
+.tooltipHidden {
+    display: none;
+}
+
+@media screen and (max-width: 60em) {
+    #total {
+        margin-left: 23em;
+    }
+
+    #summa {
+        margin-left: 15em;
+    }
+}

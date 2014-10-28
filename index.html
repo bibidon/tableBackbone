@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>backboneTable</title>
+    <link rel="stylesheet" href="library/bootstrap-3.2.0-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="CSS/indexStyleSheet.css" />
+    <script type="text/javascript" src="library/JQ/jquery.js"></script>
+    <script type="text/javascript" src="library/underscore/underscore.js"></script>
+    <script type="text/javascript" src="library/backbone/backbone.js"></script>
+    <script type="text/javascript" src="library/backbone/backbone.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+    <div class="exampleTable"></div>
+    <script type="text/template" id="startTable">
+            <table class=" table table-bordered">
+            <tr>
+                <th class="withoutborder"></th>
+                <th>Name
+                    <button class="btn-group btn-group-xs btn-sort" name="namesortalt">
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-sort" name="namesort">
+                        <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                    </button>
+                </th>
+                <th>Description
+                    <button class="btn-group btn-group-xs btn-sort" name="descriptionsortalt">
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-sort" name="descriptionsort">
+                        <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                    </button>
+                </th>
+                <th>Price
+                    <button class="btn-group btn-group-xs btn-sort" name="pricesortalt">
+                        <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-sort" name="pricesort">
+                        <span class="glyphicon glyphicon-sort-by-order"></span>
+                    </button>
+                </th>
+                <th>Quantity
+                    <button class="btn-group btn-group-xs btn-sort" name="quantitysortalt">
+                        <span class="glyphicon glyphicon-sort-by-order-alt"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-sort" name="quantitysort">
+                        <span class="glyphicon glyphicon-sort-by-order"></span>
+                    </button>
+                </th>
+                <th>Actions</th>
+            </tr>
+            <tr id="newTr">
+                <td class="withoutborder"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="actions">
+                    <button class="btn-group btn-group-xs btn-plus">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-addok">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button class="btn-group btn-group-xs btn-addcansel">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </script>
+    <script type="text/template" id="addTr">
+        <tr id="<%= id %>">
+                <td><input type='checkbox' name='fortotal' /></td>
+                <td><%= name %></td>
+                <td><%= description %></td>
+                <td><%= price %></td>
+                <td><%= quantity%></td>
+                <td class="actions">
+                    <button class='btn-group btn-group-xs btn-edit'>
+                        <span class='glyphicon glyphicon-edit'></span>
+                    </button>
+                    <button class='btn-group btn-group-xs btn-trash'>
+                        <span class='glyphicon glyphicon-trash'></span>
+                    </button>
+                    <button class='btn-group btn-group-xs btn-ok'>
+                        <span class='glyphicon glyphicon-ok'></span>
+                    </button>
+                    <button class='btn-group btn-group-xs btn-cansel'>
+                        <span class='glyphicon glyphicon-remove'></span>
+                    </button>
+                </td>
+            </tr>
+    </script>
+</body>
+</html>
