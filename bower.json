@@ -1,0 +1,17 @@
+{
+  "name": "tableBackbone",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bibidon/tableBackbone",
+  "authors": [
+    "bibidon <debibidon@gmail.com>"
+  ],
+  "description": "backbone, jquery, underscore, bootstrap",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
