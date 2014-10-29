@@ -1,11 +1,11 @@
 {
   "name": "tableBackbone",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/bibidon/tableBackbone",
   "authors": [
     "bibidon <debibidon@gmail.com>"
   ],
-  "description": "backbone, jquery, underscore, bootstrap",
+  "description": "library",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -13,5 +13,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.2.0"
+  }
 }
