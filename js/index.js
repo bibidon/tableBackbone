@@ -60,4 +60,25 @@
     });
 
     var trView = new TrView({ collection: tableCollectionModel });
+
+    var TrAddView = Backbone.View.extend({
+        el: $("tr:last-child > td"),
+        buttonPlus: $("tr:last-child > td > button.btn-plus"),
+        btnAddOk: $("tr:last-child > td > button.btn-addok"),
+        btnAddCansel: $("tr:last-child > td > button.btn-addcansel"),
+        events: {
+            "click buttonPlus": "textareaAndButton"
+        },
+        textareaAndButton: function () {
+            this.buttonPlus.hide();
+            btnAddOk.visible();
+            btnAddCansel.visible();
+            _.each(this.$el, function (td) {
+                if (td.classList.length != 0) return;
+                td.innerHTML = "<textarea cols='10' rows='1'></textarea>";
+            });
+        }
+    });
+
+    var trAddView = new TrAddView();
 })
