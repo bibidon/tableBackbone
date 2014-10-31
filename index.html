@@ -2,12 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>backboneTable</title>
-    <link rel="stylesheet" href="library/bootstrap-3.2.0-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="CSS/indexStyleSheet.css" />
-    <script type="text/javascript" src="library/JQ/jquery.js"></script>
-    <script type="text/javascript" src="library/underscore/underscore.js"></script>
-    <script type="text/javascript" src="library/backbone/backbone.js"></script>
-    <script type="text/javascript" src="library/backbone/backbone.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+    <script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
@@ -71,7 +70,7 @@
         </table>
     </script>
     <script type="text/template" id="addTr">
-        <tr id="<%= id %>">
+        <tr id="<%= id %>" class="render">
                 <td><input type='checkbox' name='fortotal' /></td>
                 <td><%= name %></td>
                 <td><%= description %></td>
