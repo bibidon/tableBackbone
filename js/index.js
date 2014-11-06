@@ -17,7 +17,7 @@
         }
     });
 
-    //функция-конструктор солекции 
+    //функция-конструктор колекции 
     var TableCollectionModel = Backbone.Collection.extend({
         model: TableModel
     });
@@ -47,6 +47,7 @@
         template: _.template($("#addTr").html()),
 
         initialize: function () {
+            this._startLocalStorage();
             this.collection = new TableCollectionModel(allObject);
             this.render();
             this.collection.on("add", this.render, this);
@@ -69,7 +70,7 @@
         events: {
             "click .btn-plus": "supplementaryMethod",
             "click .btn-addok": "supplementaryMethod",
-            "click .btn-addcansel": "supplementaryMethod"
+            "click .btn-addcansel": "supplementaryMethod",
         },
 
         //метод guid для генерации id 
@@ -128,6 +129,7 @@
                 newModel[td.getAttribute("name")] = $(td.children).val();
             });
             allObject.push(newModel);
+            this._addLocalStorage();
             this.collection.add(new TableModel(newModel));
         },
 
@@ -142,7 +144,30 @@
         },
 
         //метод для редактирования моделей
-        editind: function () { }
+        editind: function () { },
+
+        //метод для правильного отображения таблицы при загрузке страницы.
+        //Метод работает с объектом local Storage
+        _startLocalStorage: function () {
+            if (localStorage.length === 0) {
+                for (var i = 0; i < allObject.length; i++) {
+                    localStorage.setItem(allObject[i]["id"], JSON.stringify(allObject[i]));
+                }
+            } else {
+                for (var prop in localStorage) {
+                    var obj = JSON.parse(localStorage[prop]);
+                    allObject.push(obj);
+                }
+            }
+        },
+
+        //метод для добавления новой строки в Local Storage
+        _addLocalStorage: function () {
+            for (var i = 0; i < allObject.length; i++) {
+                localStorage.setItem(allObject[i]["id"], JSON.stringify(allObject[i]));
+            }
+        }
+
     });
 
     //создание экземпляра класса TrView
