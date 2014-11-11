@@ -1,7 +1,7 @@
-﻿define(function () {
+﻿define(["jquery", "backbone"], function ($, Backbone) {
 
-    function headerRender() {
-        var beginingView = Backbone.View.extend({
+    function initHeader() {
+        var Header = Backbone.View.extend({
             el: $(".exampleTable"),
 
             template: _.template($("#startTable").html()),
@@ -14,10 +14,8 @@
             }
         });
         
-        var tR = new beginingView();
+        var start = new Header();
     }
 
-    return {
-        headerView: headerView
-    };
+    return { initHeader: initHeader };
 })
