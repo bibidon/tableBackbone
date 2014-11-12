@@ -2,7 +2,6 @@
 
     function doModelAndCollection() {
 
-        //функция-конструктор модели
         this.TableModel = Backbone.Model.extend({
             defaults: {
                 name: "",
@@ -13,11 +12,10 @@
             }
         });
 
-        //функция-конструктор колекции 
         this.TableCollectionModel = Backbone.Collection.extend({
-            model: TableModel
+            model: this.TableModel
         });
     }
 
-    return { doModelAndCollection: doModelAndCollection };
+    return doModelAndCollection;
 });

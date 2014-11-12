@@ -14,6 +14,6 @@
 });
 
 require(["init"], function (init) {
-
     var start = new init();
+    start.render();
 });
