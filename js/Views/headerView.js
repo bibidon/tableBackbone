@@ -1,21 +1,18 @@
 ﻿define(["jquery", "backbone"], function ($, Backbone) {
 
-    function initHeader() {
-        var Header = Backbone.View.extend({
-            el: $(".exampleTable"),
+    var View = Backbone.View.extend({
 
-            template: _.template($("#startTable").html()),
+        el: $(".exampleTable"),
 
-            initialize: function () { this.render(); },
+        template: _.template($("#startTable").html()),
 
-            render: function () {
-                this.$el.html(this.template());
-                return this;
-            }
-        });
-        
-        var start = new Header();
-    }
+        initialize: function () { this.render(); },
 
-    return { initHeader: initHeader };
-})
+        render: function () {
+            this.$el.html(this.template());
+            return this;
+        }
+    });
+
+    return View;
+});

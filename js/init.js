@@ -1,22 +1,17 @@
-﻿define(["Models/data", "Models/collections", "Controllers/headerController", "Controllers/addTrController"], function (data, collections, headerController, addTrController) {
+﻿define(["Models/data", "Models/collections", "Views/headerView", "Views/addTrView"], function (data, collections, hView, tView) {
 
     var init = (function () {
 
         var that = null;
+        var appViewheader;
+        var appViewTable;
 
         var model = function () {
             that = this;
         };
 
         model.prototype = {
-
             constructor: model,
-
-            masModels: [new data({ name: "bread", description: "white", price: 5, quantity: 10, id: "bottom" }),
-                     new data({ name: "butter", description: "soft", price: 2, quantity: 20, id: "middle" }),
-                     new data({ name: "sausage", description: "cooked", price: 15, quantity: 5, id: "top" })],
-
-            collection: collections.doModelAndCollection,
 
             render: function () {
                 that.headerRender();
@@ -24,11 +19,11 @@
             },
 
             headerRender: function () {
-                headerController.start();
+                appViewheader = new hView();
             },
 
             addTrRender: function () {
-                addTrController.start();
+                appViewTable = new tView();
             }
         };
 
@@ -38,4 +33,4 @@
 
     return init;
 
-})
+});
