@@ -1,4 +1,4 @@
-﻿define(["Models/data", "Models/collections", "Views/headerView", "Views/addTrView"], function (data, collections, hView, tView) {
+﻿define(["Models/data", "Views/headerView", "Views/addTrView"], function (data, hView, tView) {
 
     var init = (function () {
 

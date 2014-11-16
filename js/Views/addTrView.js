@@ -1,19 +1,18 @@
-﻿define(["jquery", "backbone", "underscore", "Models/data"], function ($, Backbone, _, data) {
+﻿define(["jquery", "backbone", "underscore", "Models/data"], function ($, Backbone, _, collection) {
 
-    var TrView = Backbone.View.extend({
-        el: $("#newTr"),
+    var View = Backbone.View.extend({
 
         template: _.template($("#addTr").html()),
 
         initialize: function () {
-            this.collection = data.collection();
+            this.collection = collection;
             this.render();
         },
 
         renderTr: function (item) {
 
             this.model = item;
-            this.$el.before(this.template(this.model.toJSON()));
+            $("#newTr").before(this.template(this.model.toJSON()));
             return this;
         },
 
@@ -25,6 +24,6 @@
         }
     });
 
-    return TrView;
+    return View;
 
 });
