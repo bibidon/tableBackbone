@@ -16,9 +16,12 @@
 
     var TableCollectionModel = Backbone.Collection.extend({
         model: TableModel,
-        });
+    });
 
     var readyCollection = new TableCollectionModel(masModels);
 
-    return readyCollection;
+    return {
+        masModels: masModels,
+        readyCollection: readyCollection
+    };
 });

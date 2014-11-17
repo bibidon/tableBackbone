@@ -5,7 +5,9 @@
         template: _.template($("#addTr").html()),
 
         initialize: function () {
-            this.collection = collection;
+            this.el = $("#newTr");
+            this.$el = this.el;
+            this.collection = collection.readyCollection;
             this.render();
             this.collection.on("add", this.render, this);
         },
@@ -13,7 +15,7 @@
         renderTr: function (item) {
 
             this.model = item;
-            $("#newTr").before(this.template(this.model.toJSON()));
+            this.$el.before(this.template(this.model.toJSON()));
             return this;
         },
 
@@ -24,23 +26,23 @@
             }, this);
         },
 
-
-        events: function () {
-            $(".btn-plus").click(this.textareaAndButton);
-            $(".btn-addok").click(this.saveNewTr);
-            $(".btn-addok").click(this.visibleAndHidde);
+        events: {
+            "click .btn-plus": "supplementaryMethod",
+            "click .btn-addok": "supplementaryMethod",
+            "click .btn-addcansel": "supplementaryMethod",
         },
 
-        idFunction: function () {
-            function s4() {
-                return Math.floor((1 + Math.random()) * 0x10000)
-                           .toString(16)
-                           .substring(1);
+        supplementaryMethod: function (event) {
+            if (event.currentTarget.classList.contains("btn-plus")) {
+                this.textareaAndButton();
             }
-            return function () {
-                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                       s4() + '-' + s4() + s4() + s4();
-            };
+            if (event.currentTarget.classList.contains("btn-addok")) {
+                this.saveNewTr();
+                this.visibleAndHidde();
+            }
+            if (event.currentTarget.classList.contains("btn-addcansel")) {
+                this.visibleAndHidde();
+            }
         },
 
         textareaAndButton: function () {
@@ -54,22 +56,35 @@
         },
 
         saveNewTr: function () {
-            var id = this.idFunction();
+
+            var counter = (function () {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+                }
+                return function () {
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                };
+            })();
+
+            var id = counter();
             var newModel = {
                 "name": "",
                 "description": "",
                 "price": "",
                 "quantity": "",
-                "id": id()
+                "id": id
             };
             var lastTrTd = $("#newTr > td");
             _.each(lastTrTd, function (td) {
                 if (td.classList.length != 0) return;
                 newModel[td.getAttribute("name")] = $(td.children).val();
             });
-            allObject.push(newModel);
+            collection.masModels.push(newModel);
             //this._addLocalStorage();
-            this.collection.add(new TableModel(newModel));
+            collection.readyCollection.add(newModel);
         },
 
         visibleAndHidde: function () {
