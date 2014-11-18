@@ -7,30 +7,29 @@
             }
         }
         else {
-            for (var prop in localStorage) {
-                var match = [];
+            data.masModels.splice(0, data.masModels.length);
+            for (prop in localStorage) {
                 var obj = JSON.parse(localStorage[prop]);
-                for (var j = 0; j < data.masModels.length; j++) {
-                    if (data.masModels[j]["id"] === prop) {
-                        match.push(1);
-                    } else {
-                        continue;
-                    }
-                }
-                if (match.length === 0) {
-                    data.masModels.push(obj);
-                }
+                data.masModels.push(obj);
             }
         }
     }
 
-    function _addLocalStorage() {
+    function _add() {
         for (var i = 0; i < data.masModels.length; i++) {
             localStorage.setItem(data.masModels[i]["id"], JSON.stringify(data.masModels[i]));
         }
     }
+
+    function _remove(id) {
+        for (prop in localStorage) {
+            if (prop === id) { localStorage.removeItem(prop); }
+        }
+    }
+
     return {
         _localStorage: _localStorage,
-        _addLocalStorage: _addLocalStorage
+        _add: _add,
+        _remove: _remove
     };
 });

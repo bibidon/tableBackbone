@@ -2,11 +2,11 @@
 
     var View = Backbone.View.extend({
 
+        el: $(".exampleTable"),
+
         template: _.template($("#addTr").html()),
 
         initialize: function () {
-            this.el = $("#newTr");
-            this.$el = this.el;
             history._localStorage();
             this.collection = new collection.TableCollectionModel(collection.masModels);
             this.render();
@@ -15,7 +15,7 @@
 
         renderTr: function (item) {
             this.model = item;
-            this.$el.before(this.template(this.model.toJSON()));
+            $("#newTr").before(this.template(this.model.toJSON()));
             return this;
         },
 
@@ -30,13 +30,8 @@
             "click .btn-plus": "supplementaryMethod",
             "click .btn-addok": "supplementaryMethod",
             "click .btn-addcansel": "supplementaryMethod",
-            //"click .btn-edit": "supplementaryMethod"
-        },
-
-        otherEvents: function () {
-            $(".btn-edit").each(function (el) {
-                el.addEventListener("click", editind(), false);
-            });
+            "click .btn-edit": "supplementaryMethod",
+            "click .btn-trash": "supplementaryMethod"
         },
 
         //метод для вызова методов в зависимости от нажатой кнопки
@@ -52,7 +47,10 @@
                 this.visibleAndHidde();
             }
             if (event.currentTarget.classList.contains("btn-edit")) {
-                this.editind();
+                this.editind(event);
+            }
+            if (event.currentTarget.classList.contains("btn-trash")) {
+                this.remove(event);
             }
         },
 
@@ -98,7 +96,7 @@
                 newModel[td.getAttribute("name")] = $(td.children).val();
             });
             collection.masModels.push(newModel);
-            history._addLocalStorage();
+            history._add();
             this.collection.add(new collection.TableModel(newModel));
         },
 
@@ -112,10 +110,33 @@
             $("#newTr > td > button.btn-addcansel").removeClass("btn-visible");
         },
 
-        //метод для редактирования моделей
-        editind: function () {
-
+        //метод для редактирования строк (моделей)
+        editind: function (event) {
+            var id = event.currentTarget.id;
+            $("#" + id + "> td").each(function (indx, el) {
+                if (indx != 0 && indx != 5) {
+                    var value = $(el).text();
+                    $(el).text("");
+                    $(el).append("<textarea cols='10' rows='1'>" + value + "</textarea>");
+                }
+            });
+            $("#" + id + "> td > button.btn-edit").addClass("btn-hidden");
+            $("#" + id + "> td > button.btn-trash").addClass("btn-hidden");
+            $("#" + id + "> td > button.btn-ok").addClass("btn-visible");
+            $("#" + id + "> td > button.btn-cansel").addClass("btn-visible");
         },
+
+        //метод для удаления строк(моделей)
+        remove: function (event) {
+            var id = event.currentTarget.id;
+            $("#" + id).remove();
+            history._remove(id);
+            for (var i = 0; i < collection.masModels.length; i++) {
+                for (var prop in collection.masModels[i]) {
+                    if (collection.masModels[i][prop] === id) { collection.masModels.splice(i, i); }
+                }
+            }
+        }
     });
 
     return View;
