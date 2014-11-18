@@ -18,10 +18,9 @@
         model: TableModel,
     });
 
-    var readyCollection = new TableCollectionModel(masModels);
-
     return {
         masModels: masModels,
-        readyCollection: readyCollection
+        TableModel: TableModel,
+        TableCollectionModel: TableCollectionModel
     };
 });
