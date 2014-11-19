@@ -1,4 +1,4 @@
-﻿define(["jquery", "backbone", "underscore", "_localStorage", "Models/data"], function ($, Backbone, _, history, collection) {
+﻿define(["jquery", "backbone", "underscore", "_localStorage", "Models/data", "_validate"], function ($, Backbone, _, history, collection, val) {
 
     var View = Backbone.View.extend({
 
@@ -31,26 +31,47 @@
             "click .btn-addok": "supplementaryMethod",
             "click .btn-addcansel": "supplementaryMethod",
             "click .btn-edit": "supplementaryMethod",
-            "click .btn-trash": "supplementaryMethod"
+            "click .btn-trash": "supplementaryMethod",
+            "click .btn-ok": "supplementaryMethod",
+            "click .btn-cansel": "supplementaryMethod"
+        },
+
+        eventsValidate: function () {
+            $("tetxarea").each(function (indx, el) {
+                $(el).change(val._addValidate());
+                $(el).change(val._removeValidate());
+                $(el).change(val._alertValidate());
+            });
         },
 
         //метод для вызова методов в зависимости от нажатой кнопки
         supplementaryMethod: function (event) {
             if (event.currentTarget.classList.contains("btn-plus")) {
+                this.visToHi(event);
                 this.textareaAndButton();
             }
             if (event.currentTarget.classList.contains("btn-addok")) {
                 this.saveNewTr();
-                this.visibleAndHidde();
+                this.hiToVis(event);
             }
             if (event.currentTarget.classList.contains("btn-addcansel")) {
-                this.visibleAndHidde();
+                this.hiToVis(event);
             }
             if (event.currentTarget.classList.contains("btn-edit")) {
                 this.editind(event);
+                this.visToHi(event);
+                this.eventsValidate();
             }
             if (event.currentTarget.classList.contains("btn-trash")) {
                 this.remove(event);
+            }
+            if (event.currentTarget.classList.contains("btn-ok")) {
+                this.save(event);
+                this.hiToVis(event);
+            }
+            if (event.currentTarget.classList.contains("btn-cansel")) {
+                this.cancel(event);
+                this.hiToVis(event);
             }
         },
 
@@ -58,9 +79,6 @@
         //метод вставки текстовых полей и отображения скрытых кнопок 
         //при нажатии кнопки создать
         textareaAndButton: function () {
-            $("#newTr > td > button.btn-plus").addClass("btn-hidden");
-            $("#newTr > td > button.btn-addok").addClass("btn-visible");
-            $("#newTr > td > button.btn-addcansel").addClass("btn-visible");
             _.each($("#newTr > td"), function (td) {
                 if (td.classList.length != 0) return;
                 td.innerHTML = "<textarea cols='10' rows='1'></textarea>";
@@ -100,16 +118,6 @@
             this.collection.add(new collection.TableModel(newModel));
         },
 
-        //метод скрывает кнопки сохранить, отмена и показывает кнопку создать
-        //при нажатии кнопки сохранить и ПРИ НАЖАТИИ КНОПКИ ОТМЕНА 
-        //удаляет все textarea и возвращает строчку в первоначальное состояние!!!!
-        visibleAndHidde: function () {
-            $("textarea").remove();
-            $("#newTr > td > button.btn-plus").removeClass("btn-hidden");
-            $("#newTr > td > button.btn-addok").removeClass("btn-visible");
-            $("#newTr > td > button.btn-addcansel").removeClass("btn-visible");
-        },
-
         //метод для редактирования строк (моделей)
         editind: function (event) {
             var id = event.currentTarget.id;
@@ -118,12 +126,9 @@
                     var value = $(el).text();
                     $(el).text("");
                     $(el).append("<textarea cols='10' rows='1'>" + value + "</textarea>");
+
                 }
             });
-            $("#" + id + "> td > button.btn-edit").addClass("btn-hidden");
-            $("#" + id + "> td > button.btn-trash").addClass("btn-hidden");
-            $("#" + id + "> td > button.btn-ok").addClass("btn-visible");
-            $("#" + id + "> td > button.btn-cansel").addClass("btn-visible");
         },
 
         //метод для удаления строк(моделей)
@@ -135,6 +140,77 @@
                 for (var prop in collection.masModels[i]) {
                     if (collection.masModels[i][prop] === id) { collection.masModels.splice(i, i); }
                 }
+            }
+        },
+
+        //метод для сохранения изменений в строках(моделях)
+        save: function (event) {
+            var id = event.currentTarget.id;
+            $("#" + id + "> td > textarea").each(function (indx, el) {
+                var value = $(el).val();
+                this.parentNode.innerHTML = value;
+                $(el).detach();
+            });
+
+            var newModel = {
+                "name": "",
+                "description": "",
+                "price": "",
+                "quantity": "",
+                "id": id
+            };
+            var trTd = $("#" + id + "> td");
+            _.each(trTd, function (td) {
+                if (td.attributes.length === 0 || !!(td.attributes.class)) return;
+                newModel[td.getAttribute("name")] = $(td).text();
+            });
+            for (var i = 0; i < collection.masModels.length; i++) {
+                if (collection.masModels[i]["id"] === id) {
+                    collection.masModels.splice(i, i);
+                    collection.masModels.push(newModel);
+                }
+            }
+            history._remove(id);
+            history._add();
+            this.collection.set(collection.masModels);
+        },
+
+        //метод для отмены изменений в строках(моделях)
+        cancel: function (event) {
+            var id = event.currentTarget.id;
+            $("#" + id + "> td > textarea").each(function (indx, el) {
+                //var value = $(el).val();
+                //this.parentNode.innerHTML = value;
+                $(el).detach();
+            });
+        },
+
+        //метод для скрытия и отображения кнопок
+        visToHi: function (event) {
+            if (event.currentTarget.className.search(/btn-plus/) != -1) {
+                $("#newTr > td > button.btn-plus").addClass("btn-hidden");
+                $("#newTr > td > button.btn-addok").addClass("btn-visible");
+                $("#newTr > td > button.btn-addcansel").addClass("btn-visible");
+            } else {
+                $("#" + event.currentTarget.id + "> td > button.btn-edit").addClass("btn-hidden");
+                $("#" + event.currentTarget.id + "> td > button.btn-trash").addClass("btn-hidden");
+                $("#" + event.currentTarget.id + "> td > button.btn-ok").addClass("btn-visible");
+                $("#" + event.currentTarget.id + "> td > button.btn-cansel").addClass("btn-visible");
+            }
+        },
+
+        //метод для скрытия и отображения кнопок
+        hiToVis: function (event) {
+            if (event.currentTarget.className.search(/btn-addok/) != -1 || event.currentTarget.className.search(/btn-addcansel/) != -1) {
+                $("textarea").remove();
+                $("#newTr > td > button.btn-plus").removeClass("btn-hidden");
+                $("#newTr > td > button.btn-addok").removeClass("btn-visible");
+                $("#newTr > td > button.btn-addcansel").removeClass("btn-visible");
+            } else {
+                $("#" + event.currentTarget.id + "> td > button.btn-edit").removeClass("btn-hidden");
+                $("#" + event.currentTarget.id + "> td > button.btn-trash").removeClass("btn-hidden");
+                $("#" + event.currentTarget.id + "> td > button.btn-ok").removeClass("btn-visible");
+                $("#" + event.currentTarget.id + "> td > button.btn-cansel").removeClass("btn-visible");
             }
         }
     });

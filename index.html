@@ -69,10 +69,10 @@
     <script type="text/template" id="addTr">
         <tr id="<%= id %>" class="render">
                 <td><input type='checkbox' name='fortotal' /></td>
-                <td><%= name %></td>
-                <td><%= description %></td>
-                <td><%= price %></td>
-                <td><%= quantity%></td>
+                <td name="name"><%= name %></td>
+                <td name="description"><%= description %></td>
+                <td name="price"><%= price %></td>
+                <td name="quantity"><%= quantity%></td>
                 <td class="actions">
                     <button id="<%= id %>" class='btn-group btn-group-xs btn-edit'>
                         <span class='glyphicon glyphicon-edit'></span>
@@ -88,6 +88,9 @@
                     </button>
                 </td>
             </tr>
+    </script>
+    <script type="text/template" id="val">
+        <div class="tooltipHidden"></div>
     </script>
 </body>
 </html>
