@@ -1,84 +1,91 @@
-﻿define(function () {
+﻿define(["jquery", "Views/validateView"], function ($, View) {
+
+    var masIncorrect = [];
+    var correct;
+    var doView = function () {
+        var view = new View();
+        return view;
+    };
 
     function _addValidate() {
         var patternLetter = /^[A-zА-яЁё]+$/i;
         var patternNumber = /^\d+$/;
-        var name = this.name;
+        var name = this.offsetParent.attributes["name"].value;
         var value = this.value;
 
-        if (e.masIncorrect.length === 0) {
+        if (masIncorrect.length === 0) {
             if (name === "name" || name === "description") {
                 if (value.search(patternLetter) == -1) {
-                    e.masIncorrect.push(name);
+                    masIncorrect.push(name);
                 }
             }
             if (name === "price" || name === "quantity") {
                 if (value.search(patternNumber) == -1) {
-                    e.masIncorrect.push(name);
+                    masIncorrect.push(name);
                 }
             }
-            e.correct = false;
+            correct = false;
             return;
         }
 
-        if (e.masIncorrect.length != 0) {
+        if (masIncorrect.length != 0) {
             if (name === "name" || name === "description") {
                 if (value.search(patternLetter) == -1) {
-                    for (var i = 0; i < e.masIncorrect.length; i++) {
-                        if (e.masIncorrect[i] == name) {
-                            e.correct = false;
+                    for (var i = 0; i < masIncorrect.length; i++) {
+                        if (masIncorrect[i] == name) {
+                            correct = false;
                             return;
                         }
                     }
-                    e.masIncorrect.push(name);
-                    e.correct = false;
+                    masIncorrect.push(name);
+                    correct = false;
                     return;
                 }
             }
             if (name === "price" || name === "quantity") {
                 if (value.search(patternNumber) == -1) {
-                    for (var j = 0; j < e.masIncorrect.length; j++) {
-                        if (e.masIncorrect[j] == name) {
-                            e.correct = false;
+                    for (var j = 0; j < masIncorrect.length; j++) {
+                        if (masIncorrect[j] == name) {
+                            correct = false;
                             return;
                         }
                     }
-                    e.masIncorrect.push(name);
-                    e.correct = false;
+                    masIncorrect.push(name);
+                    correct = false;
                     return;
                 }
             }
         }
-        e.correct = true;
+        correct = true;
     }
 
     function _removeValidate() {
-        if (e.masIncorrect.length != 0) {
+        if (masIncorrect.length != 0) {
             var patternLetter = /^[A-zА-яЁё]+$/i;
             var patternNumber = /^\d+$/;
-            var name = this.name;
+            var name = this.offsetParent.attributes["name"].value;
             var value = this.value;
 
             if (name === "name" || name === "description") {
                 if (value.search(patternLetter) == 0) {
-                    for (var i = 0; i < e.masIncorrect.length; i++) {
-                        if (e.masIncorrect[i] === name) {
-                            e.masIncorrect.splice(i, 1);
+                    for (var i = 0; i < masIncorrect.length; i++) {
+                        if (masIncorrect[i] === name) {
+                            masIncorrect.splice(i, 1);
                         }
                     }
-                    e.correct = true;
+                    correct = true;
                     return;
                 }
             }
 
             if (name === "price" || name === "quantity") {
                 if (value.search(patternNumber) == 0) {
-                    for (var j = 0; j < e.masIncorrect.length; j++) {
-                        if (e.masIncorrect[j] === name) {
-                            e.masIncorrect.splice(j, 1);
+                    for (var j = 0; j < masIncorrect.length; j++) {
+                        if (masIncorrect[j] === name) {
+                            masIncorrect.splice(j, 1);
                         }
                     }
-                    e.correct = true;
+                    correct = true;
                     return;
                 }
             }
@@ -89,52 +96,59 @@
         var name = "";
         var positionTextField = this.getBoundingClientRect();
 
-        if (e.masIncorrect.length === 0) {
-            $(".tooltipHidden").removeClass("tooltipVisible");
+        if (masIncorrect.length === 0) {
+            doView().remove();
             this.classList.remove("invalid");
             return;
         }
 
-        if (e.masIncorrect.length === 1) {
-            if (e.correct === true) {
+        if (masIncorrect.length === 1) {
+            if (correct === true) {
                 if ($(".tooltipHidden")) {
                     this.classList.remove("invalid");
-                    name = e.masIncorrect.join(", ");
+                    name = masIncorrect.join(", ");
                     $(".tooltipHidden").text("Некорректные данные в ячейке с именем " + name);
                     return;
                 }
             }
-            if (e.correct === false) {
+            if (correct === false) {
+                doView();
                 $(".tooltipHidden").addClass("tooltipVisible");
                 $(".tooltipHidden").css("top", positionTextField.top + 50);
                 $(".tooltipHidden").css("left", "40%");
                 this.classList.add("invalid");
-                name = e.masIncorrect.join(", ");
+                name = masIncorrect.join(", ");
                 $(".tooltipHidden").text("Некорректные данные в ячейке с именем " + name);
                 return;
             }
 
         } else {
-            if (e.correct === true) {
+            if (correct === true) {
                 if ($(".tooltipHidden")) {
                     this.classList.remove("invalid");
-                    name = e.masIncorrect.join(", ");
+                    name = masIncorrect.join(", ");
                     $(".tooltipHidden").text("Некорректные данные в ячейках с именами: " + name);
                 }
                 return;
             }
-            if (e.correct === false) {
+            if (correct === false) {
                 $(".tooltipHidden").addClass("tooltipVisible");
                 this.classList.add("invalid");
-                name = e.masIncorrect.join(", ");
+                name = masIncorrect.join(", ");
                 $(".tooltipHidden").text("Некорректные данные в ячейках с именами: " + name);
             }
         }
     }
 
+    function _deleteView() {
+        doView().remove();
+    }
+
     return {
+        _masIncorrect: masIncorrect,
         _addValidate: _addValidate,
         _removeValidate: _removeValidate,
-        _alertValidate: _alertValidate
+        _alertValidate: _alertValidate,
+        _deleteView: _deleteView
     };
 });

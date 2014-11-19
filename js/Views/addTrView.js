@@ -33,14 +33,15 @@
             "click .btn-edit": "supplementaryMethod",
             "click .btn-trash": "supplementaryMethod",
             "click .btn-ok": "supplementaryMethod",
-            "click .btn-cansel": "supplementaryMethod"
+            "click .btn-cansel": "supplementaryMethod",
+            "click .btn-sort": "supplementaryMethod"
         },
 
         eventsValidate: function () {
-            $("tetxarea").each(function (indx, el) {
-                $(el).change(val._addValidate());
-                $(el).change(val._removeValidate());
-                $(el).change(val._alertValidate());
+            $("textarea").each(function (indx, el) {
+                $(el).change(val._addValidate);
+                $(el).change(val._removeValidate);
+                $(el).change(val._alertValidate);
             });
         },
 
@@ -49,13 +50,16 @@
             if (event.currentTarget.classList.contains("btn-plus")) {
                 this.visToHi(event);
                 this.textareaAndButton();
+                this.eventsValidate();
             }
             if (event.currentTarget.classList.contains("btn-addok")) {
+                if (val._masIncorrect.length != 0) { return; }
                 this.saveNewTr();
                 this.hiToVis(event);
             }
             if (event.currentTarget.classList.contains("btn-addcansel")) {
                 this.hiToVis(event);
+                val._deleteView();
             }
             if (event.currentTarget.classList.contains("btn-edit")) {
                 this.editind(event);
@@ -66,12 +70,19 @@
                 this.remove(event);
             }
             if (event.currentTarget.classList.contains("btn-ok")) {
+                if (val._masIncorrect.length != 0) { return; }
                 this.save(event);
                 this.hiToVis(event);
             }
             if (event.currentTarget.classList.contains("btn-cansel")) {
                 this.cancel(event);
                 this.hiToVis(event);
+                this.render();
+                val._deleteView();
+            }
+            if (event.currentTarget.classList.contains("btn-sort")) {
+                this.sort(event);
+                this.render();
             }
         },
 
@@ -88,6 +99,7 @@
         //метод создания новой модели, добавления ее в колекцию
         //при нажатии кнопки сохранить
         saveNewTr: function () {
+
             //функция guid для генерации id 
             var counter = (function () {
                 function s4() {
@@ -100,6 +112,7 @@
                         s4() + '-' + s4() + s4() + s4();
                 };
             })();
+
             var id = counter();
             var newModel = {
                 "name": "",
@@ -178,11 +191,7 @@
         //метод для отмены изменений в строках(моделях)
         cancel: function (event) {
             var id = event.currentTarget.id;
-            $("#" + id + "> td > textarea").each(function (indx, el) {
-                //var value = $(el).val();
-                //this.parentNode.innerHTML = value;
-                $(el).detach();
-            });
+            $("#" + id + "> td > textarea").detach();
         },
 
         //метод для скрытия и отображения кнопок
@@ -211,6 +220,25 @@
                 $("#" + event.currentTarget.id + "> td > button.btn-trash").removeClass("btn-hidden");
                 $("#" + event.currentTarget.id + "> td > button.btn-ok").removeClass("btn-visible");
                 $("#" + event.currentTarget.id + "> td > button.btn-cansel").removeClass("btn-visible");
+            }
+        },
+
+        //метод для сортировки данных(моделей) в таблице
+        sort: function (event) {
+            if (event.currentTarget.name === "namesort") {
+                this.collection.comparator = function (modelA, modelB) {
+                    if (modelA.name < modelB.name) return -1;
+                    if (modelA.name > modelB.name) return 1;
+                    else return 0;
+                };
+            }
+
+            if (event.currentTarget.name === "namesortalt") {
+                this.collection.comparator = function (modelA, modelB) {
+                    if (modelA.name < modelB.name) return 1;
+                    if (modelA.name > modelB.name) return -1;
+                    else return 0;
+                };
             }
         }
     });
