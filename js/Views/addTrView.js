@@ -34,7 +34,8 @@
             "click .btn-trash": "supplementaryMethod",
             "click .btn-ok": "supplementaryMethod",
             "click .btn-cansel": "supplementaryMethod",
-            "click .btn-sort": "supplementaryMethod"
+            "click .btn-sort": "supplementaryMethod",
+            "click input": "supplementaryMethod"
         },
 
         eventsValidate: function () {
@@ -87,6 +88,9 @@
                     that.collection.sort();
                 })();
                 this.render();
+            }
+            if (event.currentTarget.tagName.toLowerCase() === "input") {
+                sum.checkout(event);
             }
         },
 

@@ -49,10 +49,6 @@ td, th {
     display: block;
 }
 
-.total, .summa {
-    visibility: hidden;
-}
-
 .btn-group-xs {
     width: 20px;
     height: 20px;
@@ -62,12 +58,12 @@ td, th {
     top: 0;
 }
 
-#total {
+.total {
     margin-left: 49.5em;
     font-weight: 700;
 }
 
-#summa {
+.summa {
     margin-left: 33em;
     font-weight: 700;
 }
@@ -92,11 +88,11 @@ td, th {
 }
 
 @media screen and (max-width: 60em) {
-    #total {
+    .total {
         margin-left: 23em;
     }
 
-    #summa {
+    .summa {
         margin-left: 15em;
     }
 }

@@ -3,9 +3,9 @@
     var masIncorrect = [];
     var correct;
     var doView = function () {
-        var view = new View();
-        return view;
+        return new View();
     };
+    var view;
 
     function _addValidate() {
         var patternLetter = /^[A-zА-яЁё]+$/i;
@@ -97,7 +97,7 @@
         var positionTextField = this.getBoundingClientRect();
 
         if (masIncorrect.length === 0) {
-            doView().remove();
+            view.remove();
             this.classList.remove("invalid");
             return;
         }
@@ -112,7 +112,7 @@
                 }
             }
             if (correct === false) {
-                doView();
+                view = doView();
                 $(".tooltipHidden").addClass("tooltipVisible");
                 $(".tooltipHidden").css("top", positionTextField.top + 50);
                 $(".tooltipHidden").css("left", "40%");
@@ -141,7 +141,7 @@
     }
 
     function _deleteView() {
-        doView().remove();
+        view.remove();
     }
 
     return {

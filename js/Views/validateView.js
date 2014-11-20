@@ -5,9 +5,9 @@
         template: _.template($("#val").html()),
 
         initialize: function () {
+            this.render();
             this.el = $(".tooltipHidden");
             this.$el = this.el;
-            this.render();
         },
 
         render: function () {
