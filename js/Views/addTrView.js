@@ -1,4 +1,4 @@
-﻿define(["jquery", "backbone", "underscore", "_localStorage", "Models/data", "_validate"], function ($, Backbone, _, history, collection, val) {
+﻿define(["jquery", "backbone", "underscore", "_localStorage", "Models/data", "_validate", "_totalSumma"], function ($, Backbone, _, history, collection, val, sum) {
 
     var View = Backbone.View.extend({
 
@@ -10,7 +10,7 @@
             history._localStorage();
             this.collection = new collection.TableCollectionModel(collection.masModels);
             this.render();
-            this.collection.on("add", this.render, this);
+            this.listenTo(this.collection, "add", this.render);
         },
 
         renderTr: function (item) {
@@ -81,7 +81,11 @@
                 val._deleteView();
             }
             if (event.currentTarget.classList.contains("btn-sort")) {
-                this.sort(event);
+                var that = this;
+                collection.eventBtn["btn"] = event.currentTarget.name;
+                (function () {
+                    that.collection.sort();
+                })();
                 this.render();
             }
         },
@@ -224,23 +228,23 @@
         },
 
         //метод для сортировки данных(моделей) в таблице
-        sort: function (event) {
-            if (event.currentTarget.name === "namesort") {
-                this.collection.comparator = function (modelA, modelB) {
-                    if (modelA.name < modelB.name) return -1;
-                    if (modelA.name > modelB.name) return 1;
-                    else return 0;
-                };
-            }
+        //sort: function (event) {
+        //    if (event.currentTarget.name === "namesort") {
+        //        this.collection.comparator = function (modelA, modelB) {
+        //            if (modelA.get("name") < modelB.get("name")) return -1;
+        //            if (modelA.get("name") > modelB.get("name")) return 1;
+        //            else return 0;
+        //        }();
+        //    }
 
-            if (event.currentTarget.name === "namesortalt") {
-                this.collection.comparator = function (modelA, modelB) {
-                    if (modelA.name < modelB.name) return 1;
-                    if (modelA.name > modelB.name) return -1;
-                    else return 0;
-                };
-            }
-        }
+        //    if (event.currentTarget.name === "namesortalt") {
+        //        this.collection.comparator = function (modelA, modelB) {
+        //            if (modelA.get("name") < modelB.get("name")) return 1;
+        //            if (modelA.get("name") > modelB.get("name")) return -1;
+        //            else return 0;
+        //        }();
+        //    }
+        //}
     });
 
     return View;

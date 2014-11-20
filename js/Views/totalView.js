@@ -2,10 +2,10 @@
 
     var View = Backbone.View.extend({
 
-        template: _.template($("#val").html()),
+        template: _.template($("#summa").html()),
 
         initialize: function () {
-            this.el = $(".tooltipHidden");
+            this.el = $("#total");
             this.$el = this.el;
             this.render();
         },
@@ -17,4 +17,4 @@
     });
 
     return View;
-});
+})
