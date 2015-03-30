@@ -159,7 +159,10 @@
             history._remove(id);
             for (var i = 0; i < collection.masModels.length; i++) {
                 for (var prop in collection.masModels[i]) {
-                    if (collection.masModels[i][prop] === id) { collection.masModels.splice(i, i); }
+                    if (collection.masModels[i][prop] === id) {
+                        if (collection.masModels.length !== 1) { collection.masModels.splice(i, i); }
+                        else { collection.masModels.splice(i); }
+                    }
                 }
             }
         },
@@ -230,25 +233,6 @@
                 $("#" + event.currentTarget.id + "> td > button.btn-cansel").removeClass("btn-visible");
             }
         },
-
-        //метод для сортировки данных(моделей) в таблице
-        //sort: function (event) {
-        //    if (event.currentTarget.name === "namesort") {
-        //        this.collection.comparator = function (modelA, modelB) {
-        //            if (modelA.get("name") < modelB.get("name")) return -1;
-        //            if (modelA.get("name") > modelB.get("name")) return 1;
-        //            else return 0;
-        //        }();
-        //    }
-
-        //    if (event.currentTarget.name === "namesortalt") {
-        //        this.collection.comparator = function (modelA, modelB) {
-        //            if (modelA.get("name") < modelB.get("name")) return 1;
-        //            if (modelA.get("name") > modelB.get("name")) return -1;
-        //            else return 0;
-        //        }();
-        //    }
-        //}
     });
 
     return View;

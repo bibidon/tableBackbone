@@ -97,8 +97,11 @@
         var positionTextField = this.getBoundingClientRect();
 
         if (masIncorrect.length === 0) {
-            view.remove();
-            this.classList.remove("invalid");
+            if ($(".tooltipHidden").length !== 0) {
+                view.remove();
+                this.classList.remove("invalid");
+                return;
+            }
             return;
         }
 
